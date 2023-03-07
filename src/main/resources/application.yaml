@@ -1,0 +1,47 @@
+debug: false
+#Actuator 숨겨진 기능 모두 활성화
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  level:
+    com.board.project: debug
+    org.springframework.web.servlet: debug
+#    jpa 로그를  debug 레벨로 관찰 할 수 있는데, 안에 들어가는 바인딩 파라미터를 보여준다.
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/board
+    username: sw
+    password: java1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+#    test 데이터베이스 데이터 생성할 수 있게 도와줌
+    defer-datasource-initialization: true
+    hibernate.ddl-auto: create
+    show-sql: true
+    properties:
+      #스프링이 지원하지 않는 hibernate 기능 사용
+      hibernate.format_sql: true
+      hibernate.default_batch_fetch_size: 100
+  h2.console.enabled: false
+  sql.init.mode: always
+  #thymeleaf.cache: false
+
+  data.rest:
+      base-path: /api
+
+---
+
+spring:
+  config.activate.on-profile: testdb
+#  datasource:
+#    url: jdbc:h2:mem:board;mode=mysql
+#    driver-class-name: org.h2.Driver
+#  sql.init.mode: always
+#  test.database.replace: none
+
