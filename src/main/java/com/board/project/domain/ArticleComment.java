@@ -1,5 +1,6 @@
 package com.board.project.domain;
 
+import com.querydsl.core.types.EntityPath;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,7 @@ import java.util.Objects;
 })
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class ArticleComment extends AuditingFields{
+public class ArticleComment extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
