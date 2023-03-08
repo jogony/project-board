@@ -1,10 +1,12 @@
 package com.board.project.controller;
 
+import com.board.project.config.SpringSecurity;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -12,6 +14,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("View 컨트롤러 - 게시글")
+@Import(SpringSecurity.class)
 @WebMvcTest(ArticleController.class)
 class ArticleControllerTest {
 
@@ -35,7 +38,6 @@ class ArticleControllerTest {
                 .andExpect(model().attributeExists("articles"));
     }
 
-    @Disabled("구현 중")
     @DisplayName("[view][GET] 게시글 리스트 상세 페이지 - 정상 호출")
     @Test
     void givenNothing_whenRequestingArticleView_thenReturnsArticleView() throws Exception {
