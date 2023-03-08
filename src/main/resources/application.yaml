@@ -31,9 +31,10 @@ spring:
   h2.console.enabled: false
   sql.init.mode: always
   #thymeleaf.cache: false
-
   data.rest:
       base-path: /api
       detection-strategy: annotated
+  thymeleaf3:
+    decoupled-logic: true
 
 
