@@ -1,6 +1,5 @@
-package com.board.project.domain;
+package com.board.project.domain.article.entity;
 
-import com.querydsl.core.types.EntityPath;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

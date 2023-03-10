@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @DisplayName("View 컨트롤러 - 연동")
 @WebMvcTest
-public class AuthController {
+class AuthController {
 
     private final MockMvc mockMvc;
 

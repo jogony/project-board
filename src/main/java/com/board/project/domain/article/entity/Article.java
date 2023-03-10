@@ -1,4 +1,4 @@
-package com.board.project.domain;
+package com.board.project.domain.article.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -18,7 +18,7 @@ import java.util.Set;
 })
 
 @Entity
-public class Article extends AuditingFields{
+public class Article extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

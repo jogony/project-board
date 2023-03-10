@@ -1,7 +1,9 @@
 package com.board.project.repository;
 
 import com.board.project.config.JpaConfig;
-import com.board.project.domain.Article;
+import com.board.project.domain.article.entity.Article;
+import com.board.project.domain.article.repository.ArticleCommentRepository;
+import com.board.project.domain.article.repository.ArticleRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
