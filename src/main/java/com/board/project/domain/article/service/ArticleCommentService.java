@@ -1,6 +1,7 @@
 package com.board.project.domain.article.service;
 
 import com.board.project.domain.article.dto.ArticleCommentDto;
+import com.board.project.domain.article.dto.ArticleWithCommentsDto;
 import com.board.project.domain.article.repository.ArticleCommentRepository;
 import com.board.project.domain.article.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,9 @@ public class ArticleCommentService {
 
     @Transactional(readOnly = true)
     public List<ArticleCommentDto> searchArticleComment(Long articleId) {
-        return List.of();
+        return articleCommentRepository.findByArticle_Id(articleId)
+                .stream()
+                .map(ArticleCommentDto::from)
+                .toList();
     }
 }

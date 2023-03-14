@@ -21,13 +21,14 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
 #    test 데이터베이스 데이터 생성할 수 있게 도와줌
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
     hibernate.ddl-auto: create
     show-sql: true
     properties:
       #스프링이 지원하지 않는 hibernate 기능 사용
       hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
+    open-in-view:
   h2.console.enabled: false
   sql.init.mode: always
   #thymeleaf.cache: false
