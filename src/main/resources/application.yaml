@@ -21,7 +21,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
 #    test 데이터베이스 데이터 생성할 수 있게 도와줌
-    defer-datasource-initialization: false
+    defer-datasource-initialization: true
     hibernate.ddl-auto: create
     show-sql: true
     properties:

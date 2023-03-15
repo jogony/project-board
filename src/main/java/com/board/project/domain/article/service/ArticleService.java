@@ -1,8 +1,6 @@
 package com.board.project.domain.article.service;
 
-import com.board.project.domain.article.dto.ArticleCommentDto;
 import com.board.project.domain.article.dto.ArticleDto;
-import com.board.project.domain.article.dto.ArticleUpdateDto;
 import com.board.project.domain.article.dto.ArticleWithCommentsDto;
 import com.board.project.domain.article.entity.Article;
 import com.board.project.domain.article.repository.ArticleRepository;

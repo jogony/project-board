@@ -1,7 +1,6 @@
 package com.board.project.domain.article.service;
 
 import com.board.project.domain.article.dto.ArticleCommentDto;
-import com.board.project.domain.article.dto.ArticleWithCommentsDto;
 import com.board.project.domain.article.repository.ArticleCommentRepository;
 import com.board.project.domain.article.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
