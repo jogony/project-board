@@ -1,6 +1,6 @@
 package com.board.project.usacase;
 
-import org.junit.jupiter.api.Disabled;
+import com.board.project.application.usacase.PaginationUsacase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,13 +16,13 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 @DisplayName("비즈니스 로직 - 페이지네이션")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = PaginationService.class)
-class PaginationServiceTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = PaginationUsacase.class)
+class PaginationUsacaseTest {
 
-    private final PaginationService sut;
+    private final PaginationUsacase sut;
 
-    public PaginationServiceTest(@Autowired PaginationService paginationService) {
-        this.sut = paginationService;
+    public PaginationUsacaseTest(@Autowired PaginationUsacase paginationUsacase) {
+        this.sut = paginationUsacase;
     }
 
     @DisplayName("현재 페이지 번호와 총 페이지 수를 주면, 페이징 바 리스트를 만들어준다.")

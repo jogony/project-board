@@ -3,6 +3,7 @@ package com.board.project.domain.article.service;
 import com.board.project.domain.article.dto.ArticleDto;
 import com.board.project.domain.article.dto.ArticleWithCommentsDto;
 import com.board.project.domain.article.entity.Article;
+import com.board.project.domain.article.mapper.ArticleMapper;
 import com.board.project.domain.article.repository.ArticleRepository;
 import com.board.project.domain.article.type.SearchType;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,6 +21,7 @@ import java.util.List;
 @Transactional
 @Service
 public class ArticleService {
+    private final ArticleMapper articleMapper;
 
     private final ArticleRepository articleRepository;
 
@@ -39,7 +41,7 @@ public class ArticleService {
         };
     }
 
-    public ArticleWithCommentsDto getArticle(Long articleId) {
+    public ArticleWithCommentsDto getArticleWithComments(Long articleId) {
         return articleRepository.findById(articleId)
                 .map(ArticleWithCommentsDto::from)
                 .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다"));
@@ -79,5 +81,17 @@ public class ArticleService {
 
     public List<String> getHashtags() {
         return articleRepository.findAllDistinctHashtags();
+    }
+
+    public ArticleDto getArticle(Long articleId) {
+        return articleRepository.findById(articleId)
+                .map(ArticleDto::from)
+                .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다"));
+    }
+
+    public ArticleDto getReferemceById(Long articleId) {
+        return articleMapper.toArticleDto(
+                articleRepository.getReferenceById(articleId)
+        );
     }
 }

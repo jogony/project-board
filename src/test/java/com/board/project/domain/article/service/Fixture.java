@@ -1,6 +1,7 @@
 package com.board.project.domain.article.service;
 
 import com.board.project.domain.article.dto.ArticleCommentDto;
+import com.board.project.domain.article.dto.ArticleDto;
 import com.board.project.domain.article.dto.ArticleWithCommentsDto;
 import com.board.project.domain.article.entity.Article;
 import com.board.project.domain.article.entity.ArticleComment;
@@ -24,6 +25,36 @@ public class Fixture {
                 "ksw",
                 LocalDateTime.now(),
                 "ksw"
+        );
+    }
+
+    public static ArticleDto createArticleDto() {
+        return createArticleDto("title", "content");
+    }
+
+    private static ArticleDto createArticleDto(String title, String content) {
+        return ArticleDto.of(
+                1L,
+                createUserAccountDto(),
+                title,
+                content,
+                null,
+                LocalDateTime.now(),
+                "Uno",
+                LocalDateTime.now(),
+                "Uno");
+    }
+
+    public static ArticleCommentDto createArticleCommentDto(Long id, Long parentCommentId, String content) {
+        return ArticleCommentDto.of(
+                id,
+                1L,
+                createUserAccountDto(),
+                content,
+                LocalDateTime.now(),
+                "uno",
+                LocalDateTime.now(),
+                "uno"
         );
     }
 

@@ -1,6 +1,5 @@
 package com.board.project.domain.article.repository;
 
-import com.board.project.domain.article.dto.ArticleCommentDto;
 import com.board.project.domain.article.entity.ArticleComment;
 import com.board.project.domain.article.entity.QArticleComment;
 import com.querydsl.core.types.dsl.DateTimeExpression;
@@ -31,4 +30,5 @@ public interface ArticleCommentRepository extends
         bindings.bind(root.createdBy).first(StringExpression::containsIgnoreCase);
     }
 
+    void deleteByIdAndUserAccount_UserId(Long articleCommentId, String userId);
 }

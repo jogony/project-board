@@ -13,6 +13,7 @@
                   th:selected="${param.searchType != null && (param.searchType.toString == searchType.name)}"
             />
         </attr>
+
         <attr sel="#search-value" th:value="${param.searchValue}" />
 
         <attr sel="#article-table">
@@ -52,6 +53,9 @@
                 </attr>
             </attr>
         </attr>
+
+        <attr sel="#write-article" th:href="@{/articles/form}" />
+
         <attr sel="#pagination">
             <attr sel="li[0]/a"
                   th:text="'previous'"

@@ -11,7 +11,6 @@ import java.util.Objects;
 @Getter
 @ToString(callSuper = true)
 @Table(indexes = {
-        @Index(columnList = "userId", unique = true),
         @Index(columnList = "email", unique = true),
         @Index(columnList = "createdAt"),
         @Index(columnList = "createdBy")
@@ -22,15 +21,13 @@ public class UserAccount extends AuditingFields {
     @Column(length = 50)
     private String userId;
 
-    @Setter
-    @Column(nullable = false) private String userPassword;
-
+    @Setter @Column(nullable = false) private String userPassword;
     @Setter @Column(length = 100) private String email;
     @Setter @Column(length = 100) private String nickname;
     @Setter private String memo;
 
 
-    protected UserAccount() {}
+    public UserAccount() {}
 
     private UserAccount(String userId, String userPassword, String email, String nickname, String memo, String createdBy) {
         this.userId = userId;

@@ -1,4 +1,4 @@
-package com.board.project.controller;
+package com.board.project.application.controller;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;

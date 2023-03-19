@@ -1,4 +1,4 @@
-package com.board.project.usacase;
+package com.board.project.application.usacase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
 @Service
-public class PaginationService {
+public class PaginationUsacase {
 
     private static final int BAR_LENGTH = 5;
 

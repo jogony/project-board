@@ -25,8 +25,8 @@ public class Article extends AuditingFields {
     private Long id;
 
     @Setter
-    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
+    @ManyToOne(optional = false)
     private UserAccount userAccount;
     @Setter @Column(nullable = false) private String title;
     @Setter @Column(nullable = true) private String hashtag;
@@ -38,9 +38,17 @@ public class Article extends AuditingFields {
     @OneToMany(mappedBy = "article" ,cascade = CascadeType.ALL)
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
-    protected Article() {}
+    public Article() {}
 
     private Article(UserAccount userAccount, String title, String hashtag, String content) {
+        this.userAccount = userAccount;
+        this.title = title;
+        this.hashtag = hashtag;
+        this.content = content;
+    }
+
+    private Article(Long id, UserAccount userAccount, String title, String hashtag, String content) {
+        this.id = id;
         this.userAccount = userAccount;
         this.title = title;
         this.hashtag = hashtag;
@@ -51,6 +59,9 @@ public class Article extends AuditingFields {
         return new Article(userAccount, title, content, hashtag);
     }
 
+    public static Article of(Long id, UserAccount userAccount, String title, String hashtag, String content) {
+        return new Article(id, userAccount, title, content, hashtag);
+    }
 
     @Override
     public boolean equals(Object o) {
