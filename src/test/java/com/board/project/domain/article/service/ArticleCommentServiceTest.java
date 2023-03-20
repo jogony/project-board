@@ -9,7 +9,6 @@ import com.board.project.domain.article.repository.ArticleRepository;
 import com.board.project.domain.user.UserAccountRepository;
 import com.board.project.domain.user.dto.UserAccountDto;
 import com.board.project.domain.user.mapper.UserMapper;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +41,7 @@ class ArticleCommentServiceTest {
     private ArticleMapper articleMapper;
     @Mock
     private UserMapper userMapper;
-    @Disabled
+
     @DisplayName("게시글 ID로 조회하면, 해당하는 댓글 리스트를 반환한다.")
     @Test
     void givenArticleId_whenSearchingComments_thenReturnsComments() {
@@ -83,13 +82,13 @@ class ArticleCommentServiceTest {
         // Given
         Long articleCommentId = 1L;
         String userId = "uno";
-        willDoNothing().given(articleCommentRepository).deleteById(articleCommentId);
+        willDoNothing().given(articleCommentRepository).deleteByIdAndUserAccount_UserId(articleCommentId, userId);
 
         // When
-        sut.deleteArticleComment(articleCommentId);
+        sut.deleteArticleComment(articleCommentId, userId);
 
         // Then
-        then(articleCommentRepository).should().deleteById(articleCommentId);
+        then(articleCommentRepository).should().deleteByIdAndUserAccount_UserId(articleCommentId, userId);
     }
 
 }
