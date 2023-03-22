@@ -1,6 +1,6 @@
 package com.board.project.domain.user.service;
 
-import com.board.project.domain.user.UserAccountRepository;
+import com.board.project.domain.user.repository.UserAccountRepository;
 import com.board.project.domain.user.dto.UserAccountDto;
 import com.board.project.domain.user.mapper.UserMapper;
 import jakarta.persistence.EntityNotFoundException;

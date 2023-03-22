@@ -1,34 +1,30 @@
 package com.board.project.domain.article.dto.request;
 
 import com.board.project.domain.article.dto.ArticleDto;
+import com.board.project.domain.article.dto.HashtagDto;
 import com.board.project.domain.user.dto.UserAccountDto;
+
+import java.util.Set;
 
 public record ArticleRequest(
         String title,
-        String content,
-        String hashtag
+        String content
 ) {
 
-    public static ArticleRequest of(String title, String content, String hashtag) {
-        return new ArticleRequest(title, content, hashtag);
+    public static ArticleRequest of(String title, String content) {
+        return new ArticleRequest(title, content);
     }
 
     public ArticleDto toDto(UserAccountDto userAccountDto) {
-        return ArticleDto.of(
-                userAccountDto,
-                title,
-                content,
-                hashtag
-        );
+        return toDto(userAccountDto, null);
     }
 
-    public ArticleDto toDto(Long articleId, UserAccountDto userAccountDto) {
+    public ArticleDto toDto(UserAccountDto userAccountDto, Set<HashtagDto> hashtagDtos) {
         return ArticleDto.of(
-                articleId,
                 userAccountDto,
                 title,
                 content,
-                hashtag
+                hashtagDtos
         );
     }
 

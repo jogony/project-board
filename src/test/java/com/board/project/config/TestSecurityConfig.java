@@ -1,6 +1,6 @@
 package com.board.project.config;
 
-import com.board.project.domain.user.UserAccountRepository;
+import com.board.project.domain.user.repository.UserAccountRepository;
 import com.board.project.domain.user.entity.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;

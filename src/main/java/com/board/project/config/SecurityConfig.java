@@ -1,6 +1,6 @@
 package com.board.project.config;
 
-import com.board.project.domain.user.UserAccountRepository;
+import com.board.project.domain.user.repository.UserAccountRepository;
 import com.board.project.domain.user.dto.UserAccountDto;
 import com.board.project.domain.user.dto.security.BoardPrincipal;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;

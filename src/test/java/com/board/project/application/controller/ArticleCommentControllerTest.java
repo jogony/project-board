@@ -1,7 +1,6 @@
 package com.board.project.application.controller;
 
 import com.board.project.application.usacase.CreateArticleCommentUsacase;
-import com.board.project.config.SecurityConfig;
 import com.board.project.config.TestSecurityConfig;
 import com.board.project.domain.article.dto.ArticleCommentDto;
 import com.board.project.domain.article.dto.request.ArticleCommentRequest;

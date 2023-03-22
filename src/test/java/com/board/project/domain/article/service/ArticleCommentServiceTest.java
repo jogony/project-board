@@ -6,10 +6,9 @@ import com.board.project.domain.article.entity.ArticleComment;
 import com.board.project.domain.article.mapper.ArticleMapper;
 import com.board.project.domain.article.repository.ArticleCommentRepository;
 import com.board.project.domain.article.repository.ArticleRepository;
-import com.board.project.domain.user.UserAccountRepository;
+import com.board.project.domain.user.repository.UserAccountRepository;
 import com.board.project.domain.user.dto.UserAccountDto;
 import com.board.project.domain.user.mapper.UserMapper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,6 +47,9 @@ class ArticleCommentServiceTest {
         // Given
         Long articleId = 1L;
         ArticleComment expected = Fixture.createArticleComment("content");
+        given(articleCommentRepository.findByArticle_Id(articleId)).willReturn(List.of(
+                expected
+        ));
         // When
         List<ArticleCommentDto> actual = sut.searchArticleComment(articleId);
         // Then

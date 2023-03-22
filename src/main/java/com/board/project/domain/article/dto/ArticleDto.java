@@ -4,13 +4,15 @@ import com.board.project.domain.article.entity.Article;
 import com.board.project.domain.user.dto.UserAccountDto;
 
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public record ArticleDto (
         Long id,
         UserAccountDto userAccountDto,
         String title,
         String content,
-        String hashtag,
+        Set<HashtagDto> hashtagDtos,
         LocalDateTime createdAt,
         String createdBy,
         LocalDateTime modifiedAt,
@@ -21,7 +23,7 @@ public record ArticleDto (
             UserAccountDto userAccountDto,
             String title,
             String content,
-            String hashtag,
+            Set<HashtagDto> hashtagDtos,
             LocalDateTime createdAt,
             String createdBy,
             LocalDateTime modifiedAt,
@@ -32,7 +34,7 @@ public record ArticleDto (
                 userAccountDto,
                 title,
                 content,
-                hashtag,
+                hashtagDtos,
                 createdAt,
                 createdBy,
                 modifiedAt,
@@ -46,7 +48,9 @@ public record ArticleDto (
                 UserAccountDto.from(entity.getUserAccount()),
                 entity.getTitle(),
                 entity.getContent(),
-                entity.getHashtag(),
+                entity.getHashtags().stream()
+                        .map(HashtagDto::from)
+                        .collect(Collectors.toUnmodifiableSet()),
                 entity.getCreatedAt(),
                 entity.getCreatedBy(),
                 entity.getModifiedAt(),
@@ -58,9 +62,9 @@ public record ArticleDto (
             UserAccountDto userAccountDto,
             String title,
             String content,
-            String hashtag
+            Set<HashtagDto> hashtagDtos
     ) {
-        return new ArticleDto(null, userAccountDto, title, content, hashtag, null, null, null, null);
+        return new ArticleDto(null, userAccountDto, title, content, hashtagDtos, null, null, null, null);
     }
 
     public static ArticleDto of(
@@ -68,9 +72,9 @@ public record ArticleDto (
             UserAccountDto userAccountDto,
             String title,
             String content,
-            String hashtag
+            Set<HashtagDto> hashtagDtos
     ) {
-        return new ArticleDto(id, userAccountDto, title, content, hashtag, null, null, null, null);
+        return new ArticleDto(id, userAccountDto, title, content, hashtagDtos, null, null, null, null);
     }
 
     public Article toEntity() {
@@ -78,8 +82,7 @@ public record ArticleDto (
                 id,
                 userAccountDto.toEntity(),
                 title,
-                content,
-                hashtag
+                content
         );
     }
 
@@ -87,8 +90,7 @@ public record ArticleDto (
         return Article.of(
                 userAccountDto.toEntity(),
                 title,
-                content,
-                hashtag
+                content
         );
     }
 }
