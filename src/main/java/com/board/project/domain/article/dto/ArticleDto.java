@@ -2,6 +2,7 @@ package com.board.project.domain.article.dto;
 
 import com.board.project.domain.article.entity.Article;
 import com.board.project.domain.user.dto.UserAccountDto;
+import com.board.project.domain.user.entity.UserAccount;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -89,6 +90,13 @@ public record ArticleDto (
     public Article toEntity(UserAccountDto userAccountDto) {
         return Article.of(
                 userAccountDto.toEntity(),
+                title,
+                content
+        );
+    }
+    public Article toEntity(UserAccount userAccount) {
+        return Article.of(
+                userAccount,
                 title,
                 content
         );

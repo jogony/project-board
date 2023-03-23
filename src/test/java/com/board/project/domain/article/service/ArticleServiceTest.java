@@ -8,6 +8,8 @@ import com.board.project.domain.article.entity.Hashtag;
 import com.board.project.domain.article.repository.ArticleRepository;
 import com.board.project.domain.article.repository.HashtagRepository;
 import com.board.project.domain.article.type.SearchType;
+import com.board.project.domain.user.dto.UserAccountDto;
+import com.board.project.domain.user.entity.UserAccount;
 import com.board.project.domain.user.repository.UserAccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -20,14 +22,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.board.project.domain.article.service.Fixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.as;
@@ -38,12 +41,17 @@ import static org.mockito.BDDMockito.*;
 @ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {
 
-    @InjectMocks private ArticleService sut;
+    @InjectMocks
+    private ArticleService sut;
 
-    @Mock private HashtagService hashtagService;
-    @Mock private ArticleRepository articleRepository;
-    @Mock private UserAccountRepository userAccountRepository;
-    @Mock private HashtagRepository hashtagRepository;
+    @Mock
+    private HashtagService hashtagService;
+    @Mock
+    private ArticleRepository articleRepository;
+    @Mock
+    private UserAccountRepository userAccountRepository;
+    @Mock
+    private HashtagRepository hashtagRepository;
 
     @DisplayName("검색어 없이 게시글을 검색하면, 게시글 페이지를 반환한다.")
     @Test
@@ -231,8 +239,8 @@ class ArticleServiceTest {
     @Test
     void givenModifiedArticleInfo_whenUpdatingArticle_thenUpdatesArticle() {
         // Given
+        ArticleDto dto = createArticleDto("새 타이틀", "새 내용 #springboot");
         Article article = createArticle();
-        ArticleDto dto = createArticleDto("title", "content");
         Set<String> expectedHashtagNames = Set.of("springboot");
         Set<Hashtag> expectedHashtags = new HashSet<>();
 
@@ -252,7 +260,8 @@ class ArticleServiceTest {
                 .hasFieldOrPropertyWithValue("content", dto.content())
                 .extracting("hashtags", as(InstanceOfAssertFactories.COLLECTION))
                 .hasSize(1)
-                .extracting("hashtagName");
+                .extracting("hashtagName")
+                .containsExactly("springboot");
         then(articleRepository).should().getReferenceById(dto.id());
         then(userAccountRepository).should().getReferenceById(dto.userAccountDto().userId());
         then(articleRepository).should().flush();
@@ -348,4 +357,84 @@ class ArticleServiceTest {
         // Then
         assertThat(actualHashtags).isEqualTo(expectedHashtags);
         then(hashtagRepository).should().findAllHashtagNames();
-    }}
+    }
+
+    private UserAccount createUserAccount() {
+        return createUserAccount("uno");
+    }
+
+    private UserAccount createUserAccount(String userId) {
+        return UserAccount.of(
+                userId,
+                "password",
+                "uno@email.com",
+                "Uno",
+                null
+        );
+    }
+
+    private Article createArticle() {
+        return createArticle(1L);
+    }
+
+    private Article createArticle(Long id) {
+        Article article = Article.of(
+                createUserAccount(),
+                "title",
+                "content"
+        );
+        article.addHashtags(Set.of(
+                createHashtag(1L, "java"),
+                createHashtag(2L, "spring")
+        ));
+        ReflectionTestUtils.setField(article, "id", id);
+
+        return article;
+    }
+
+    private Hashtag createHashtag(String hashtagName) {
+        return createHashtag(1L, hashtagName);
+    }
+
+    private Hashtag createHashtag(Long id, String hashtagName) {
+        Hashtag hashtag = Hashtag.of(hashtagName);
+        ReflectionTestUtils.setField(hashtag, "id", id);
+
+        return hashtag;
+    }
+
+    private HashtagDto createHashtagDto() {
+        return HashtagDto.of("java");
+    }
+
+    private ArticleDto createArticleDto() {
+        return createArticleDto("title", "content");
+    }
+
+    private ArticleDto createArticleDto(String title, String content) {
+        return ArticleDto.of(
+                1L,
+                createUserAccountDto(),
+                title,
+                content,
+                null,
+                LocalDateTime.now(),
+                "Uno",
+                LocalDateTime.now(),
+                "Uno");
+    }
+
+    private UserAccountDto createUserAccountDto() {
+        return UserAccountDto.of(
+                "uno",
+                "password",
+                "uno@mail.com",
+                "Uno",
+                "This is memo",
+                LocalDateTime.now(),
+                "uno",
+                LocalDateTime.now(),
+                "uno"
+        );
+    }
+}

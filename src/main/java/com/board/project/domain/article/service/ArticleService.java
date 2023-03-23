@@ -7,6 +7,7 @@ import com.board.project.domain.article.entity.Article;
 import com.board.project.domain.article.entity.Hashtag;
 import com.board.project.domain.article.mapper.ArticleMapper;
 import com.board.project.domain.article.repository.ArticleRepository;
+import com.board.project.domain.article.repository.HashtagRepository;
 import com.board.project.domain.article.type.SearchType;
 import com.board.project.domain.user.repository.UserAccountRepository;
 import com.board.project.domain.user.entity.UserAccount;
@@ -29,10 +30,9 @@ import java.util.stream.Collectors;
 @Service
 public class ArticleService {
     private final UserAccountRepository userAccountRepository;
-    private final ArticleMapper articleMapper;
 
     private final HashtagService hashtagService;
-
+    private final HashtagRepository hashtagRepository;
     private final ArticleRepository articleRepository;
 
     //조회만 하기 때문
@@ -66,8 +66,14 @@ public class ArticleService {
     }
 
     public void saveArticle(ArticleDto dto) {
-        articleRepository.save(dto.toEntity());
+        UserAccount userAccount = userAccountRepository.getReferenceById(dto.userAccountDto().userId());
+        Set<Hashtag> hashtags = renewHashtagsFromContent(dto.content());
+
+        Article article = dto.toEntity(userAccount);
+        article.addHashtags(hashtags);
+        articleRepository.save(article);
     }
+
 
     public void updateArticle(Long articleId, ArticleDto dto) {
         try {
@@ -77,11 +83,17 @@ public class ArticleService {
             if(article.getUserAccount().equals(userAccount)) {
                 if(dto.title() != null) article.setTitle(dto.title());
                 if(dto.content() != null) article.setContent(dto.content());
-                article.addHashtags(
-                        dto.hashtagDtos().stream()
-                                .map(HashtagDto::toEntity)
-                                .collect(Collectors.toUnmodifiableSet())
-                );
+
+                Set<Long> hashtagIds = article.getHashtags().stream()
+                        .map(Hashtag::getId)
+                        .collect(Collectors.toUnmodifiableSet());
+                article.clearHashtags();
+                articleRepository.flush();
+
+                hashtagIds.forEach(hashtagService::deleteHashtagWithoutArticles);
+
+                Set<Hashtag> hashtags = renewHashtagsFromContent(dto.content());
+                article.addHashtags(hashtags);
             }
         } catch (EntityNotFoundException e) {
             log.warn("게시글 업데이트 실패, 게시글을 수정하는데 필요한 정보를 찾을 수 없슴니다.");
@@ -110,7 +122,7 @@ public class ArticleService {
     }
 
     public List<String> getHashtags() {
-        return articleRepository.findAllDistinctHashtags();
+        return hashtagRepository.findAllHashtagNames();
     }
 
     public ArticleDto getArticle(Long articleId) {
@@ -122,4 +134,20 @@ public class ArticleService {
     public Long getArticleCount() {
         return articleRepository.count();
     }
+
+    private Set<Hashtag> renewHashtagsFromContent(String content) {
+        Set<String> hashtagNamesInContent = hashtagService.parseHashtagNames(content);
+        Set<Hashtag> hashtags = hashtagService.findHashtagsByNames(hashtagNamesInContent);
+        Set<String> existingHashtagNames = hashtags.stream()
+                .map(Hashtag::getHashtagName)
+                .collect(Collectors.toUnmodifiableSet());
+
+        hashtagNamesInContent.forEach(newHashtagName -> {
+            if(!existingHashtagNames.contains(newHashtagName)) {
+                hashtags.add(Hashtag.of(newHashtagName));
+            }
+        });
+        return hashtags;
+    }
+
 }

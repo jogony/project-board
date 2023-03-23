@@ -43,7 +43,7 @@ public class Hashtag extends AuditingFields{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Hashtag that)) return false;
-        return this.getId().equals(that.getId());
+        return this.getId() != null && this.getId().equals(that.getId());
     }
 
     @Override

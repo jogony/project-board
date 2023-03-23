@@ -1,20 +1,18 @@
 package com.board.project.application.controller;
 
+import com.board.project.application.usacase.PaginationUsacase;
 import com.board.project.domain.article.dto.request.ArticleRequest;
 import com.board.project.domain.article.dto.response.ArticleResponse;
 import com.board.project.domain.article.dto.response.ArticleWithCommentsResponse;
 import com.board.project.domain.article.service.ArticleService;
 import com.board.project.domain.article.type.FormStatus;
 import com.board.project.domain.article.type.SearchType;
-import com.board.project.domain.user.dto.UserAccountDto;
-import com.board.project.application.usacase.PaginationUsacase;
 import com.board.project.domain.user.dto.security.BoardPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -53,6 +51,7 @@ public class ArticleController {
         map.addAttribute("articles", articles);
         map.addAttribute("paginationBarNumbers", barNumbers);
         map.addAttribute("searchTypes", SearchType.values());
+        map.addAttribute("searchTypeHashtag", SearchType.HASHTAG);
 
         return "articles/index";
     }
@@ -78,6 +77,7 @@ public class ArticleController {
 
         map.addAttribute("articles", articles);
         map.addAttribute("hashtags", hashtags);
+        //중복의 여지가 있음..
         map.addAttribute("paginationBarNumbers", barNumbers);
         map.addAttribute("searchType", SearchType.HASHTAG);
 

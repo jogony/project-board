@@ -21,8 +21,8 @@ public class Fixture {
                 1L,
                 createUserAccountDto(),
                 Set.of(),
-                "title",
-                "content",
+                "새 타이틀",
+                "새 내용 #springboot",
                 Set.of(HashtagDto.of("java")),
                 LocalDateTime.now(),
                 "ksw",
@@ -37,8 +37,8 @@ public class Fixture {
     public static Article createArticle(Long id) {
         Article article = Article.of(
                 createUserAccount(),
-                "title",
-                "content"
+                "새 타이틀",
+                "새 내용 #springboot"
         );
         article.addHashtags(Set.of(
                 createHashtag(1L, "java"),
