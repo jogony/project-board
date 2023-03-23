@@ -42,7 +42,12 @@ public class ArticleCommentService {
         UserAccount userAccount =userAccountDto.toEntity();
         ArticleComment articleComment = dto.toEntity(article, userAccount);
 
-        articleCommentRepository.save(articleComment);
+        if (dto.parentCommentId() != null) {
+            ArticleComment parentComment = articleCommentRepository.getReferenceById(dto.parentCommentId());
+            parentComment.addChildComment(articleComment);
+        } else {
+            articleCommentRepository.save(articleComment);
+        }
     }
 
     public void deleteArticleComment(long articleCommentId, String userId) {

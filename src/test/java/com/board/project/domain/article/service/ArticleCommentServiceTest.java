@@ -2,10 +2,13 @@ package com.board.project.domain.article.service;
 
 import com.board.project.domain.article.dto.ArticleCommentDto;
 import com.board.project.domain.article.dto.ArticleDto;
+import com.board.project.domain.article.entity.Article;
 import com.board.project.domain.article.entity.ArticleComment;
+import com.board.project.domain.article.entity.Hashtag;
 import com.board.project.domain.article.mapper.ArticleMapper;
 import com.board.project.domain.article.repository.ArticleCommentRepository;
 import com.board.project.domain.article.repository.ArticleRepository;
+import com.board.project.domain.user.entity.UserAccount;
 import com.board.project.domain.user.repository.UserAccountRepository;
 import com.board.project.domain.user.dto.UserAccountDto;
 import com.board.project.domain.user.mapper.UserMapper;
@@ -15,8 +18,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -93,4 +99,82 @@ class ArticleCommentServiceTest {
         then(articleCommentRepository).should().deleteByIdAndUserAccount_UserId(articleCommentId, userId);
     }
 
+    /**
+     * //TODO : 대댓글 테스트 만들기
+     * @param content
+     * @return
+     */
+
+    private ArticleCommentDto createArticleCommentDto(String content) {
+        return createArticleCommentDto(null, content);
+    }
+
+    private ArticleCommentDto createArticleCommentDto(Long parentCommentId, String content) {
+        return createArticleCommentDto(1L, parentCommentId, content);
+    }
+
+    private ArticleCommentDto createArticleCommentDto(Long id, Long parentCommentId, String content) {
+        return ArticleCommentDto.of(
+                id,
+                1L,
+                createUserAccountDto(),
+                parentCommentId,
+                content,
+                LocalDateTime.now(),
+                "uno",
+                LocalDateTime.now(),
+                "uno"
+        );
+    }
+
+    private UserAccountDto createUserAccountDto() {
+        return UserAccountDto.of(
+                "uno",
+                "password",
+                "uno@mail.com",
+                "Uno",
+                "This is memo",
+                LocalDateTime.now(),
+                "uno",
+                LocalDateTime.now(),
+                "uno"
+        );
+    }
+
+    private ArticleComment createArticleComment(Long id, String content) {
+        ArticleComment articleComment = ArticleComment.of(
+                createArticle(),
+                createUserAccount(),
+                content
+        );
+        ReflectionTestUtils.setField(articleComment, "id", id);
+
+        return articleComment;
+    }
+
+    private UserAccount createUserAccount() {
+        return UserAccount.of(
+                "uno",
+                "password",
+                "uno@email.com",
+                "Uno",
+                null
+        );
+    }
+
+    private Article createArticle() {
+        Article article = Article.of(
+                createUserAccount(),
+                "title",
+                "content"
+        );
+        ReflectionTestUtils.setField(article, "id", 1L);
+        article.addHashtags(Set.of(createHashtag(article)));
+
+        return article;
+    }
+
+    private Hashtag createHashtag(Article article) {
+        return Hashtag.of("java");
+    }
 }
