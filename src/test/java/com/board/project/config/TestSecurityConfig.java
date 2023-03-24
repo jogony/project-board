@@ -1,7 +1,7 @@
 package com.board.project.config;
 
-import com.board.project.domain.user.repository.UserAccountRepository;
-import com.board.project.domain.user.entity.UserAccount;
+import com.board.project.domain.user.dto.UserAccountDto;
+import com.board.project.domain.user.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -14,20 +14,27 @@ import static org.mockito.BDDMockito.given;
 
 @Import(SecurityConfig.class)
 public class TestSecurityConfig {
-    @MockBean private UserAccountRepository userAccountRepository;
+    @MockBean private UserAccountService userAccountService;
 
-    TestSecurityConfig(@Autowired UserAccountRepository userAccountRepository) {
-        this.userAccountRepository = userAccountRepository;
+    TestSecurityConfig(@Autowired UserAccountService userAccountService) {
+        this.userAccountService = userAccountService;
     }
 
     @BeforeTestMethod
     public void securitySetUp() {
-        given(userAccountRepository.findById(anyString())).willReturn(Optional.of(UserAccount.of(
+        given(userAccountService.searchUser(anyString()))
+                .willReturn(Optional.of(createUserAccountDto()));
+        given(userAccountService.saveUser(anyString(), anyString(), anyString(), anyString(), anyString()))
+                .willReturn(createUserAccountDto());
+    }
+
+    private UserAccountDto createUserAccountDto(){
+        return UserAccountDto.of(
                 "kswTest",
                 "pw",
                 "ksw-test@gmail.com",
                 "ksw-test",
                 "test-memo"
-        )));
+        );
     }
 }
