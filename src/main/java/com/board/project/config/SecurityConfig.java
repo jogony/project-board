@@ -33,6 +33,7 @@ public class SecurityConfig {
     ) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/**").permitAll()
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/",
@@ -48,6 +49,7 @@ public class SecurityConfig {
                                 .userService(oAuth2UserService)
                         )
                 )
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
                 .build();
     }
 
