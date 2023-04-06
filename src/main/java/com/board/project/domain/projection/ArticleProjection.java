@@ -4,6 +4,7 @@ import com.board.project.domain.article.entity.Article;
 import com.board.project.domain.user.entity.UserAccount;
 import org.springframework.data.rest.core.config.Projection;
 
+
 import java.time.LocalDateTime;
 
 @Projection(name = "withUserAccount", types = Article.class)
